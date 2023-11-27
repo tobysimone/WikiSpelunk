@@ -1,0 +1,25 @@
+nav {
+    display: flex;
+    align-items: center;
+
+    height: 50px;
+
+    background-color: var(--background-raised);
+    padding: 10px 15px;
+}
+
+.brand {
+    font-size: 1.2rem;
+}
+
+.brand-name {
+    color: var(--foreground);
+}
+
+.brand-name:visited {
+    color: var(--foreground);
+}
+
+.brand-icon {
+    color: var(--accent);
+}

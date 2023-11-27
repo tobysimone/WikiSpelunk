@@ -1,0 +1,33 @@
+.page-container {
+    height: 100vh;
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+.word-input {
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.play-button {
+    width: 300px;
+    padding: 20px 15px;
+    border-radius: 20px;
+    background-color: var(--accent);
+}
+
+.word-input {
+    background-color: var(--background);
+    color: var(--foreground);
+    display: flex;
+    padding: 20px 15px;
+    width: 375px;
+    border-radius: 25px;
+    border: 1px solid var(--accent);
+    align-items: center;
+    text-align: center;
+}
+
+.word-input:focus {
+    border-color: var(--accent);
+}
