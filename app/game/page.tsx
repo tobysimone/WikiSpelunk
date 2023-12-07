@@ -18,6 +18,19 @@ export default function Game() {
     const [history, setHistory] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [wikiPage, setWikiPage] = useState<WikiPageProps | null>(null);
+    const [time, setTime] = useState({ minutes: 0, seconds: 0 });
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTime((prevTime) => {
+                const newSeconds = prevTime.seconds + 1;
+                const newMinutes = prevTime.minutes + Math.floor(newSeconds / 60);
+                return { minutes: newMinutes, seconds: newSeconds % 60 };
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const startingWord = searchParams.get('startingWord') || '';
     const endingWord = searchParams.get('endingWord') || '';
@@ -61,7 +74,7 @@ export default function Game() {
     }
 
     const redirectToWin = () => {
-        router.push('/game/win');
+        router.push(`/game/win?startingWord=${startingWord}&endingWord=${endingWord}&minutes=${time.minutes}&seconds=${time.seconds}&wordsClicked=${history.length}`);
     }
 
     useEffect(() => {
@@ -76,7 +89,7 @@ export default function Game() {
 
     return (
         <>
-            <StatsBar startingWord={overflowString(startingWord)} endingWord={overflowString(endingWord)} lastWord={overflowString(history[history.length - 1])} wordsClicked={history.length} />
+            <StatsBar startingWord={overflowString(startingWord)} endingWord={overflowString(endingWord)} lastWord={overflowString(history[history.length - 1])} wordsClicked={history.length} time={time} />
             { loading ? (
                 <Loading />
             ) : (
@@ -88,7 +101,8 @@ export default function Game() {
     )
 }
 
-function StatsBar({ startingWord, endingWord, lastWord, wordsClicked }: { startingWord: string, endingWord: string, lastWord: string, wordsClicked: number }) {
+function StatsBar({ startingWord, endingWord, lastWord, wordsClicked, time }: { startingWord: string, endingWord: string, lastWord: string, wordsClicked: number, time: any }) {
+    
     return (
         <div className="w-full stats-bar">
             <div className="flex flex-col justify-center">
@@ -98,7 +112,7 @@ function StatsBar({ startingWord, endingWord, lastWord, wordsClicked }: { starti
                 </div>
                 <div className="flex flex-row items-center">
                     <IoMdStopwatch className="mr-1" />
-                    <Timer />
+                    <Timer time={time} />
                 </div>
             </div>
             <div className="flex flex-row items-center text-sm">
@@ -134,21 +148,7 @@ function StatsBar({ startingWord, endingWord, lastWord, wordsClicked }: { starti
     )
 }*/
 
-function Timer() {
-    const [time, setTime] = useState({ minutes: 0, seconds: 0 });
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTime((prevTime) => {
-                const newSeconds = prevTime.seconds + 1;
-                const newMinutes = prevTime.minutes + Math.floor(newSeconds / 60);
-                return { minutes: newMinutes, seconds: newSeconds % 60 };
-            });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
-
+function Timer({ time }: any) {
     return (
         <>
             {time.minutes.toString().padStart(2, '0')}:{time.seconds.toString().padStart(2, '0')}

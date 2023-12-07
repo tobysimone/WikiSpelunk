@@ -17,3 +17,7 @@
     --accent: #5a4bad;
   }
 }
+
+body {
+  background-color: var(--background);
+}
